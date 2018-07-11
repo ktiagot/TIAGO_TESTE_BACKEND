@@ -5,13 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class contaCliente {
-   private int id;
-   private String cpfCnpj;
-   private String nome;
-   private String status;
-   private double valor; 
-
-
+    //Adicionar clientes
     public static void adicionarCliente(int id, String cpf_cnpj, String nome, String status, double valor)throws Exception
     {
         String query = "INSERT INTO tb_customer_account VALUES("+"?,?,?,?,?)";
@@ -25,6 +19,7 @@ public class contaCliente {
         stmt.execute();
         stmt.close();
     }
+    //Cálculo da média
     public static double getValorCliente() throws SQLException, InstantiationException, IllegalAccessException {
       String query = "SELECT AVG(VL_TOTAL) FROM tb_customer_account WHERE VL_TOTAL > 560 AND ID_CUSTOMER BETWEEN 1500 AND 2700;";
       PreparedStatement stmt=null;
@@ -45,7 +40,8 @@ public class contaCliente {
       stmt.close();
       return vltotal;
    }
-    
+   
+   //Buscando a lista de clientes com a condição e ordenação pedidas
    public static void getCustomerAccount() throws SQLException, InstantiationException, IllegalAccessException 
    {
        String query = "SELECT * FROM tb_customer_account "+
@@ -62,9 +58,11 @@ public class contaCliente {
        ResultSet res = stmt.executeQuery();
        
        System.out.println("Clientes utilizados para o cálculo da média:");
-       String is_active;
+       System.out.println("ID - CPF - NOME - ATIVO - SALDO");
+       String is_active; //Variável para apresentação em relação a atividade do cliente
        while (res.next())
        {
+           //Condição para exibição da atividade do cliente
            if(res.getString("IS_ACTIVE").toUpperCase().equals("S"))
            {
                is_active="SIM";
@@ -73,6 +71,7 @@ public class contaCliente {
            {
                is_active="NÃO";
            }
+          //Apresentação dos clientes utilizados para o cálculo da média
           System.out.println(res.getInt("ID_CUSTOMER") + " - "
           + res.getString("CPF_CNPJ") + " - "
           + res.getString("NM_CUSTOMER") + " - "

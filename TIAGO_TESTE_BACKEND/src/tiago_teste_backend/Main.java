@@ -12,13 +12,14 @@ public class Main
 {
     public static void main(String[] args) throws SQLException, IllegalAccessException, InstantiationException
     {   
-       
+        //Declaração de variáveis
         Scanner leitor = new Scanner(System.in);
         String erro = null;
         boolean verificar;
         double avg;
-        System.out.println("Deseja inserir mais um registro? (S/N)");
-        String insert = leitor.next();            
+        System.out.println("Deseja inserir um registro? (S/N)");
+        String insert = leitor.next();
+        //Verificar se o usuário quer cadastrar um cliente
         if("S".equals(insert.toUpperCase()))
         {
             verificar = true;
@@ -27,6 +28,7 @@ public class Main
         {
             verificar = false;
         }
+        //Enquanto ele quiser cadastrar, os comandos de inserção serão pedidos
         while(verificar == true)
         {
             System.out.println("ID do cliente: ");
@@ -50,7 +52,8 @@ public class Main
             }
             
             System.out.println("Deseja inserir um registro? (S/N)");
-            insert = leitor.next();            
+            insert = leitor.next();     
+            //Verificando novamente, ao final da inserção, se o usuário quer cadastrar um cliente
             if("S".equals(insert.toUpperCase()))
             {
                 verificar = true;
@@ -61,7 +64,9 @@ public class Main
             }
         }
         avg = contaCliente.getValorCliente();
+        //Apresentando média dos valores totais
         System.out.println("Média dos valores: R$"+avg);
+        //Apresentando lista dos clientes usados no cálculo da média
         contaCliente.getCustomerAccount();
     }
 }
