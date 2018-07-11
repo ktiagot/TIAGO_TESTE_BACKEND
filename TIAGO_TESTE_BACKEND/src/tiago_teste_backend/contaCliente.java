@@ -27,26 +27,29 @@ public class contaCliente {
     }
     public static double getValorCliente() throws SQLException, InstantiationException, IllegalAccessException {
       String query = "SELECT AVG(VL_TOTAL) FROM tb_customer_account WHERE VL_TOTAL > 560 AND ID_CUSTOMER BETWEEN 1500 AND 2700;";
-      PreparedStatement stmt;
-      try{
-      stmt = conexaoBanco.getConexao().prepareStatement(query);
-      }catch (Exception ex){
+      PreparedStatement stmt=null;
+      try
+      {
+        stmt = conexaoBanco.getConexao().prepareStatement(query);
+      }
+      catch (Exception ex)
+      {
           System.out.println(conexaoBanco.getConexao());
       }
       ResultSet res = stmt.executeQuery();
-      double cA = 0;
+      double vltotal = 0;
       if (res.next()) {
-         cA = res.getDouble(1);
+         vltotal = res.getDouble(1);
       }
       res.close();
       stmt.close();
-      return cA;
+      return vltotal;
    }
     
    public static void getCustomerAccount() throws SQLException, InstantiationException, IllegalAccessException 
    {
        String query = "SELECT * FROM tb_customer_account "+
-       "WHERE VL_TOTAL > 560 AND ID_CUSTOMER BETWEEN 1500 AND 2700";
+       "WHERE VL_TOTAL > 560 AND ID_CUSTOMER BETWEEN 1500 AND 2700 ORDER BY VL_TOTAL DESC";
        PreparedStatement stmt = null;
        try
        {
@@ -57,18 +60,23 @@ public class contaCliente {
            System.out.println(conexaoBanco.getConexao());
        }
        ResultSet res = stmt.executeQuery();
-       String isActive;
+       
+       System.out.println("Clientes utilizados para o cálculo da média:");
+       String is_active;
        while (res.next())
        {
-          if(res.getBoolean("IS_ACTIVE")){
-              isActive = "Sim";
-          }else{
-              isActive = "Não";
-          } 
-          System.out.println(res.getInt("ID_CUSTOMER") + " | "
-          + res.getString("CPF_CNPJ") + " | "
-          + res.getString("NM_CUSTOMER") + " | "
-          + isActive + " | "
+           if(res.getString("IS_ACTIVE").toUpperCase().equals("S"))
+           {
+               is_active="SIM";
+           }
+           else
+           {
+               is_active="NÃO";
+           }
+          System.out.println(res.getInt("ID_CUSTOMER") + " - "
+          + res.getString("CPF_CNPJ") + " - "
+          + res.getString("NM_CUSTOMER") + " - "
+          + is_active + " - "
           + res.getDouble("VL_TOTAL"));
       }
       res.close();

@@ -19,7 +19,7 @@ public class Main
         double avg;
         System.out.println("Deseja inserir mais um registro? (S/N)");
         String insert = leitor.next();            
-        if(insert.toUpperCase()=="S")
+        if("S".equals(insert.toUpperCase()))
         {
             verificar = true;
         }
@@ -49,9 +49,9 @@ public class Main
                 System.out.println(ex);
             }
             
-            System.out.println("Deseja inserir mais um registro? (S/N)");
+            System.out.println("Deseja inserir um registro? (S/N)");
             insert = leitor.next();            
-            if(insert.toUpperCase()=="S")
+            if("S".equals(insert.toUpperCase()))
             {
                 verificar = true;
             }
@@ -62,6 +62,6 @@ public class Main
         }
         avg = contaCliente.getValorCliente();
         System.out.println("Média dos valores: R$"+avg);
-        
+        contaCliente.getCustomerAccount();
     }
 }
