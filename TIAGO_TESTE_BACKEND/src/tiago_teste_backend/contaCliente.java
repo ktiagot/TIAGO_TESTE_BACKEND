@@ -8,32 +8,30 @@ public class contaCliente {
    private int id;
    private String cpfCnpj;
    private String nome;
-   private boolean status;
+   private String status;
    private double valor; 
 
 
-    public static void adicionarCliente(int id, String cpf_cnpj, String nome, boolean status, double valor)throws Exception
+    public static void adicionarCliente(int id, String cpf_cnpj, String nome, String status, double valor)throws Exception
     {
         String query = "INSERT INTO tb_customer_account VALUES("+"?,?,?,?,?)";
         PreparedStatement stmt;
-        stmt = conexaoBanco.getConnection().prepareStatement(query);
+        stmt = conexaoBanco.getConexao().prepareStatement(query);
         stmt.setInt(1, id);
         stmt.setString(2, cpf_cnpj);
         stmt.setString(3, nome);
-        stmt.setBoolean(4, status);
+        stmt.setString(4, status);
         stmt.setDouble(5, valor);
         stmt.execute();
         stmt.close();
     }
-    public static double getValorCliente() throws SQLException {
-      String query = "SELECT AVG(vl_total) FROM tb_customer_account"
-              + " WHERE vl_total > 560"
-              + " AND id_customer BETWEEN 1500 AND 2700";
-      PreparedStatement stmt = null;
+    public static double getValorCliente() throws SQLException, InstantiationException, IllegalAccessException {
+      String query = "SELECT AVG(VL_TOTAL) FROM tb_customer_account WHERE VL_TOTAL > 560 AND ID_CUSTOMER BETWEEN 1500 AND 2700;";
+      PreparedStatement stmt;
       try{
-      stmt = conexaoBanco.getConnection().prepareStatement(query);
+      stmt = conexaoBanco.getConexao().prepareStatement(query);
       }catch (Exception ex){
-          System.out.println(conexaoBanco.getConnection());
+          System.out.println(conexaoBanco.getConexao());
       }
       ResultSet res = stmt.executeQuery();
       double cA = 0;
@@ -45,29 +43,33 @@ public class contaCliente {
       return cA;
    }
     
-   public static void getCustomerAccount() throws SQLException {
-      String query = "SELECT * FROM tb_customer_account"
-              + " WHERE vl_total > 560"
-              + " AND id_customer BETWEEN 1500 AND 2700";
-      PreparedStatement stmt = null;
-      try{
-      stmt = conexaoBanco.getConnection().prepareStatement(query);
-      }catch (Exception ex){
-          System.out.println(conexaoBanco.getConnection());
-      }
-      ResultSet res = stmt.executeQuery();
-      String isActive;
-      while (res.next()) {
-          if(res.getBoolean("is_active")){
+   public static void getCustomerAccount() throws SQLException, InstantiationException, IllegalAccessException 
+   {
+       String query = "SELECT * FROM tb_customer_account "+
+       "WHERE VL_TOTAL > 560 AND ID_CUSTOMER BETWEEN 1500 AND 2700";
+       PreparedStatement stmt = null;
+       try
+       {
+           stmt = conexaoBanco.getConexao().prepareStatement(query);
+       }
+       catch (Exception ex)
+       {
+           System.out.println(conexaoBanco.getConexao());
+       }
+       ResultSet res = stmt.executeQuery();
+       String isActive;
+       while (res.next())
+       {
+          if(res.getBoolean("IS_ACTIVE")){
               isActive = "Sim";
           }else{
               isActive = "Não";
           } 
-          System.out.println(res.getInt("id_customer") + " | "
-          + res.getString("cpf_cnpj") + " | "
-          + res.getString("nm_customer") + " | "
+          System.out.println(res.getInt("ID_CUSTOMER") + " | "
+          + res.getString("CPF_CNPJ") + " | "
+          + res.getString("NM_CUSTOMER") + " | "
           + isActive + " | "
-          + res.getDouble("vl_total"));
+          + res.getDouble("VL_TOTAL"));
       }
       res.close();
       stmt.close();
